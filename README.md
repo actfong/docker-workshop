@@ -110,6 +110,8 @@ In this case, you could provide anything to the `docker run` command... whether 
 
 In the FromAtoB universe, it seems we have settle the the latter.
 
+Also, for inspiration, check the Dockerfiles used to create the official NGINX and Ruby images on Docker Hub.
+
 By now, you should be abe to create your own Dockerfile!
 
 
