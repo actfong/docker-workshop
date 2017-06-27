@@ -54,6 +54,12 @@ Try to run two instances of NGINX: one on localhost:8000 and another on localhos
 ## Part 2: Create your own image
 For this part of the workshop, we will create our own image, containing our own application.
 
+GOALS:
+- Understand Dockerfile
+- Build your own image
+- Basic understanding of the Layered File System
+- Run your own image as a container. Run bash within your container.
+
 ### 1. Get an app
 To get started, clone an ready-made sinatra application with `git clone `
 
@@ -123,10 +129,25 @@ The `.` (current location) implies that there is a `Dockerfile` in your current 
 
 While building your image, pay attention to the layers being created, as well as the time it takes. (This has to do with the Layered File System)
 
-#### Mini Challenge
+#### Mini Challenge 1
 Let's say we want to install the `whois` package into our image. How would you do it?
 
 Once you have figure it out, build your image again and see whether the layers (id's) are still the same as the last time.
 Also, pay attention to the build time.
 
+#### Mini Challenge 2 
+Run your brand new image as a container. Can you run `bash` within your container? Can you find out which process has PID 1?
+
 - - - -
+
+## Part 3: Networking
+GOALS:
+- Run two docker containers: One containing your Ruby app, the other one a Redis
+- Connect these two containers. Use `redis` and `pry` gems to verify that your containers are connected.
+
+- - - -
+
+## Part 4: Docker Compose
+GOALS:
+- Basic understanding of docker-compose
+- Being able to run multiple containers without running separate `docker run` commands
