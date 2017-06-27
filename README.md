@@ -34,6 +34,7 @@ Run your docker again, but this time mount the files from your host's filesystem
 docker run -p 80:80 -v $(pwd):/usr/share/nginx/html nginx:alpine
 # run your nginx:alpine image, port forward 80 to 80
 ```
+Now check the changes on http://localhost/ and http://localhost/50x.html
 
 Commonly used options for `docker run`
 ```
