@@ -113,7 +113,7 @@ In the FromAtoB universe, it seems we have settle the the latter.
 By now, you should be abe to create your own Dockerfile!
 
 
-### 3. Build your image
+#### Build your image
 `docker build -t {username/image-name:version} .`
 
 The `.` (current location) implies that there is a `Dockerfile` in your current directory. Else you would have to provide another directory.
@@ -126,3 +126,5 @@ Let's say we want to install the `whois` package into our image. How would you d
 
 Once you have figure it out, build your image again and see whether the layers (id's) are still the same as the last time.
 Also, pay attention to the build time.
+
+- - - -
