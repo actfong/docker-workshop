@@ -15,7 +15,7 @@ docker images                     # show the list of images available on your ma
 docker run -p 80:80 nginx:alpine  # run your nginx image, port forward 80 to 80
 ```
 
-Now check localost on your browser
+Now check localost on your browser http://localhost/ and http://localhost/50x.html
 ```
 docker ps                 # (-a) check the running/exited containers
 docker rm {container_id}  # remove running container
@@ -23,15 +23,23 @@ docker rm {container_id}  # remove running container
 Create your own index.html and 50x.html files
 
 ```
-mkdir /somewhere/nginx_example
-cd /somewhere/nginx_example
+mkdir ~/somewhere/nginx_example
+cd ~/somewhere/nginx_example
 vim index.html
 vim 50x.html
 ```
 
-Run your docker again, but this time mount the files from your host's filesystem into your container
+Run your docker again, but this time mount the files from your host's filesystem onto your container
 ```
-docker run -p 80:80 nginx:alpine  # run your nginx image, port forward 80 to 80
+docker run -p 80:80 -v $(pwd):/usr/share/nginx/html nginx:alpine
+# run your nginx:alpine image, port forward 80 to 80
 ```
-`-n` option to assign a name, which would appear in `docker ps`
+
+Commonly used options for `docker run`
+```
+-p          # port forward from container to host
+-v          # mount volume from host onto container
+--name      # option to assign a name, which would appear in `docker ps`
+--rm        # remove container on exit
+```
 
