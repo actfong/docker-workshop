@@ -61,7 +61,7 @@ GOALS:
 - Run your own image as a container. Run bash within your container.
 
 ### 1. Get an app
-To get started, clone an ready-made sinatra application with `git clone `
+To get started, clone an ready-made sinatra application with `git clone git@github.com:actfong/docker-workshop.git`
 
 ### 2. Dockerfile
 In this repo, create a `Dockerfile`. Pay attention to the capital `D`
