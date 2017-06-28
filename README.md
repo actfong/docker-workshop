@@ -26,16 +26,21 @@ Commands to run
 ```
 docker pull nginx                 # to pull the nginx image from docker hub
 docker images                     # show the list of images available on your machine
-docker run -p 80:80 nginx:alpine  # run your nginx image, port forward 80 to 80
+docker run -p 80:80 nginx:alpine  # run your nginx image, port forward 80 to 80. 
+# In my case, the image was tagged with alpine, your tag might be different. 
+
 ```
 
 Now check localost on your browser http://localhost/ and http://localhost/50x.html
+
+In case you are running `docker-machine`, get the ip with `docker-machine ip {machine-name}`.
+
 ```
-docker ps                      # (-a) check the running/exited containers
-docker stop {container_id}     # stop running container
-docker restart {container_id}  # restart running container
+docker ps                           # (-a) check the running/exited containers
+docker stop {container_id}          # stop running container
+docker restart {container_id}       # restart running container
 docker exec -it {container_id} /sh  # grab a shell
-docker rm {container_id}       # remove running container
+docker rm {container_id}            # remove running container
 ```
 Create your own index.html and 50x.html files
 
@@ -50,6 +55,7 @@ Run your docker again, but this time mount the files from your host's filesystem
 ```
 docker run -p 80:80 -v $(pwd):/usr/share/nginx/html nginx:alpine
 # run your nginx:alpine image, port forward 80 to 80
+# $(pwd) prints the current working directory
 ```
 Now check the changes on http://localhost/ and http://localhost/50x.html
 
