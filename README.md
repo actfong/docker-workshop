@@ -65,6 +65,7 @@ Commonly used options for `docker run`
 -v          # mount volume from host onto container
 --name      # option to assign a name, which would appear in `docker ps`
 --rm        # remove container on exit
+-it         # interactive mode and grab TTY. Useful for interactions, not useful for running web-apps or daemons
 ```
 
 Think Image vs Containers as Classes vs Instances!
@@ -107,7 +108,10 @@ GOALS:
 - Run your own image as a container. Run bash within your container.
 
 ### 1. Get an app
-To get started, clone an ready-made sinatra application with `git clone git@github.com:actfong/docker-workshop.git`
+To get started, clone an ready-made sinatra application with:
+```
+git clone git@github.com:actfong/docker-workshop.git
+```
 
 ### 2. Dockerfile
 In this repo, create a `Dockerfile`. Pay attention to the capital `D`
@@ -156,13 +160,16 @@ However, whenever you run a container built with the ENTRYPOINT and CMD from abo
 
 If you don't use ENTRYPOINT:
 ```
-CMD ["npm", "run", "production"]
+CMD ["npm", "run", "production"]               # node way
+# or
+CMD ["ruby", "my-app.rb", "-o", "0.0.0.0"]     # sinatra way
 ```
+
 In this case, you could provide anything to the `docker run` command... whether it is `/bin/bash` to `ls /etc`.
 
 In the FromAtoB universe, it seems we have settle the the latter.
 
-Also, for inspiration, check the Dockerfiles used to create the official NGINX and Ruby images on Docker Hub.
+Also, for inspiration, check the Dockerfiles used to create the official [NGINX](https://hub.docker.com/_/nginx/) and [Ruby](https://hub.docker.com/_/ruby/) images on Docker Hub.
 
 By now, you should be abe to create your own Dockerfile!
 
@@ -178,7 +185,7 @@ While building your image, pay attention to the layers being created, as well as
 ### Challenges
 
 #### Mini Challenge 1
-Let's say we want to install the `whois` package into our image. How would you do it?
+Let's say we want to install the `whois` package into our image. How would you do it? (Tip: check previous `apt-get install`)
 
 Once you have figure it out, build your image again and see whether the layers (id's) are still the same as the last time.
 Also, pay attention to the build time.
@@ -197,7 +204,7 @@ Run your brand new image as a container. Can you run `bash` within your containe
 ## Part 3: Networking
 GOALS:
 - Being able to run multiple containers: One containing your Ruby app, the other one a Redis
-- Verify that a connection has been established. In our case, we will use `redis` gem to verify that (, but feel free to use  `telnet`).
+- Verify that a connection has been established. In our case, we will use `redis` gem to verify that (, but feel free to use  `telnet`. And figure out for yourself how to install telnet on a debian distro).
 
 
 ### 1 Create and list your networks
@@ -221,7 +228,7 @@ docker network inspect {network-name}
 ### Challenges:
 
 #### Mini Challenge 1
-By now, you should have the skills to pull the *redis* image and run it as a container.
+By now, you should have the skills to *pull* the *redis* image and run it as a container.
 Can you run your container in such a way, that it is attached to your network (`--net`)?
 
 Another important note, to allow connections from other containers in the same network, they also need some kind of a *hostname*. 
@@ -230,6 +237,8 @@ When running containers in a network, the name that you provide with `--name` ca
 #### Mini Challenge 2
 Please install the `redis` gem from https://github.com/redis/redis-rb by adding it to your Gemfile and run `bundle install`
 (TIP: There are various ways to do that!)
+
+When installing the redis gem, don't forget to re-build your image (`docker build`)
 
 Once you have installed the `redis` gem, can you use `irb` within your sinatra-app container to set and get values on the Redis container that you just created? 
 
