@@ -31,8 +31,11 @@ docker run -p 80:80 nginx:alpine  # run your nginx image, port forward 80 to 80
 
 Now check localost on your browser http://localhost/ and http://localhost/50x.html
 ```
-docker ps                 # (-a) check the running/exited containers
-docker rm {container_id}  # remove running container
+docker ps                      # (-a) check the running/exited containers
+docker stop {container_id}     # stop running container
+docker restart {container_id}  # restart running container
+docker exec -it {container_id} /sh  # grab a shell
+docker rm {container_id}       # remove running container
 ```
 Create your own index.html and 50x.html files
 
