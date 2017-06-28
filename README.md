@@ -171,18 +171,28 @@ Another important note, to allow connections from other containers in the same n
 Please install the `redis` gem from https://github.com/redis/redis-rb by adding it to your Gemfile and run `bundle install`
 (TIP: There is a variety ways to do that)
 
-Once you have installed the `redis` gem, could you use `irb` within your sinatra-app container to set / get values on the Redis container that you just created? 
+Once you have installed the `redis` gem, you could use `irb` within your sinatra-app container to set / get values on the Redis container that you just created? 
 
 One tip: 
 ```
 require 'redis'
-redis = Redis.new(:host => {name-of-your-redis-container}, :port => 6379
+redis = Redis.new(:host => {name-of-your-redis-container}, :port => 6379)
 ```
 
 If you can set and get values from your IRB console to redis, that means you have succesfully "networked" the two containers.
+
 Also take a look in 
-`docker network {network-name} inspect`
-Where the attached containers are listed
+```
+docker network {network-name} inspect
+```
+, where the attached containers are listed.
+
+### Mini Challenge 3
+Redis clients (such as the installed `redis` gem) has a function called `ping`, when the connection can be established, it return `PONG`.
+
+Let's create a route in your sinatra-app called `/redis-status`. We will use this route to see whether your Redis instance is up.
+
+Task: Display the result from your `ping` onto the page as plain text.
 
 - - - -
 
