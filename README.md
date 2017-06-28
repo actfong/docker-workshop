@@ -1,6 +1,20 @@
 # docker-workshop
 docker workshop for beginners
 
+*GOAL*:
+
+At the end of the workshop, participants should feel confident about :
+- creating their own images
+- run/stop/remove containers
+- allow containers to communicate with each other
+- write his/her own docker-compose
+
+Pre-requisite
+- Make sure you have docker installed on your machine. Whether you are using the old docker-machine or the new Docker for Mac.
+- register account with Docker Hub
+
+- - - - 
+
 ## Part 1: Hello World
 For our Hello World exercise, we will run NGINX in a docker container.
 
@@ -48,6 +62,29 @@ Think Image vs Containers as Classes vs Instances!
 
 #### Mini Challenge
 Try to run two instances of NGINX: one on localhost:8000 and another on localhost:8001. Verify that they are two separate instances by serving different static pages.
+
+Once everything works (and verified), you can remove your nginx image with
+
+```
+docker rmi {image-name}
+```
+
+#### What you have learned in this section
+1. A bunch of image commands:
+```
+docker pull {image-name}
+docker images (try the filter option!)
+docker rmi {image-name}
+```
+
+2. A bunch of container commands:
+```
+docker run (with various options)
+docker ps
+docker rm
+```
+
+3. Difference between Image and Container
 
 - - - -
  
