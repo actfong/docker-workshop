@@ -175,6 +175,12 @@ Also, pay attention to the build time.
 #### Mini Challenge 2 
 Run your brand new image as a container. Can you run `bash` within your container? Can you find out which process has PID 1?
 
+#### What you have learned in this section
+1. Write your own Dockerfile, with various commands such as `FROM`, `RUN`, `WORKDIR`, `ADD`, `COPY`, `EXPOSE`, `ENTRYPOINT` and `CMD`.
+2. Build your own image with `docker build` and tag it with `-t`
+3. Layered File System (LFS)
+4. PID 1 in Docker containers
+
 - - - -
 
 ## Part 3: Networking
