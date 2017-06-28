@@ -187,41 +187,49 @@ Run your brand new image as a container. Can you run `bash` within your containe
 
 ## Part 3: Networking
 GOALS:
-- Run two docker containers: One containing your Ruby app, the other one a Redis
-- Connect these two containers. Use `redis` and `pry` gems to verify that your containers are connected.
+- Being able to run multiple containers: One containing your Ruby app, the other one a Redis
+- Verify that a connection has been established. In our case, we will use `redis` gem to verify that (, but feel free to use  `telnet`).
 
+
+### 1 Create and list your networks
 ```
 docker network ls                         # list existing networks
-docker network create {network-name}   # create your network
+docker network create {network-name}      # create your network
 ```
 
-Now run your container containing the Sinatra app with the following option
+### 2 Ensure that your container runs inside a specific network
+
+Now run your container (`docker run`) containing the Sinatra app with the following option
 ```
 --net={network-name}
 ```
 
-You can now verify that your container is indeed connected to your network by
-
+You can now verify that your container is indeed connected to your network by:
 ```
 docker network inspect {network-name}
 ```
 
-### Mini Challenge 1
-By now, you should have the skills to pull the redis image and run it as a container.
-Can you run your container in such a way that it is attached to your network (`--net`) AND has opened its port (`-p`) 6379?
+### Challenges:
 
-Another important note, to allow connections from other containers in the same network, they also need some kind of a hostname. When running containers in a network, the name that you provide with `--name` can be used as a hostname.
+#### Mini Challenge 1
+By now, you should have the skills to pull the *redis* image and run it as a container.
+Can you run your container in such a way, that it is attached to your network (`--net`) AND has opened its port (`-p`) 6379?
 
-### Mini Challenge 2
+Another important note, to allow connections from other containers in the same network, they also need some kind of a *hostname*. When running containers in a network, the name that you provide with `--name` can be used as a hostname.
+
+#### Mini Challenge 2
 Please install the `redis` gem from https://github.com/redis/redis-rb by adding it to your Gemfile and run `bundle install`
-(TIP: There is a variety ways to do that)
+(TIP: There are various ways to do that!)
 
-Once you have installed the `redis` gem, you could use `irb` within your sinatra-app container to set / get values on the Redis container that you just created? 
+Once you have installed the `redis` gem, can you use `irb` within your sinatra-app container to set and get values on the Redis container that you just created? 
 
 One tip: 
 ```
 require 'redis'
 redis = Redis.new(:host => {name-of-your-redis-container}, :port => 6379)
+redis.get "foo"
+redis.set "foo", "bar"
+redis.get "foo"        # should return bar
 ```
 
 If you can set and get values from your IRB console to redis, that means you have succesfully "networked" the two containers.
@@ -232,13 +240,32 @@ docker network {network-name} inspect
 ```
 , where the attached containers are listed.
 
-### Mini Challenge 3
+#### Mini Challenge 3
 Redis clients (such as the installed `redis` gem) has a function called `ping`, when the connection can be established, it return `PONG`.
 
 Let's create a route in your sinatra-app called `/redis-status`. We will use this route to see whether your Redis instance is up.
 
 Task: Display the result from your `ping` onto the page as plain text.
 
+### What you have learned in this section
+1. A bunch of commands for docker networks
+```
+docker network create {network-name}
+docker network ls
+docker network inspect
+docker network rm {network-name}
+```
+
+2. How to run a container in a specific network
+```
+docker run --net {network-name} {image-name}     # potentially along with some other options
+```
+
+3. How to lookup a container within a network. The container's name provided in:
+```
+docker run --name {container-name}
+```
+can be used as a hostname within a network.
 - - - -
 
 ## Part 4: Docker Compose
