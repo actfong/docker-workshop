@@ -216,9 +216,10 @@ docker network inspect {network-name}
 
 #### Mini Challenge 1
 By now, you should have the skills to pull the *redis* image and run it as a container.
-Can you run your container in such a way, that it is attached to your network (`--net`) AND has opened its port (`-p`) 6379?
+Can you run your container in such a way, that it is attached to your network (`--net`)?
 
-Another important note, to allow connections from other containers in the same network, they also need some kind of a *hostname*. When running containers in a network, the name that you provide with `--name` can be used as a hostname.
+Another important note, to allow connections from other containers in the same network, they also need some kind of a *hostname*. 
+When running containers in a network, the name that you provide with `--name` can be used as a hostname.
 
 #### Mini Challenge 2
 Please install the `redis` gem from https://github.com/redis/redis-rb by adding it to your Gemfile and run `bundle install`
@@ -292,6 +293,12 @@ Otherwise, just spefified `image` with necessary tags is enough
 
 `ports` 
 Takes care of port forwarding
+
+`networks`
+They can appear at top-level and within your service.
+
+At top level, it allows you to create a network from scratch. 
+Once created, you can let your containers (services) attach to it by again defining `networks` under the name of your `service`, along with `ports`, `volumes` etc.
 
 `volumes`
 Actually... I don't know enough about this :)
