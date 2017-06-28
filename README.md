@@ -272,3 +272,42 @@ can be used as a hostname within a network.
 GOALS:
 - Basic understanding of docker-compose
 - Being able to run multiple containers without running separate `docker run` commands
+
+By the time you have a platform containing multiple services (containers), it no longer makes sense to run `docker run` for each container. 
+Instead, you can configure multiple containers in such a way, that you can run the whole stack using one command: `docker-compose up`
+
+### docker-compose.yml
+A basic structure can be found here => https://docs.docker.com/compose/overview/
+
+`services` 
+It contains a list of containers that you want to run. The first level below `services` are names that you want to give to your containers. These names will also be used for lookup within your network
+
+`build` and `image`
+Indicates the location of your Dockerfile. 
+Only needed if you need docker-compose to build your image. 
+Otherwise, just spefified `image` with necessary tags is enough
+
+`ports` 
+Takes care of port forwarding
+
+`volumes`
+Actually... I don't know enough about this :)
+
+Within a `service`, it allows you to mount volumes from host into your image.
+A top level, AFAIK, you can share volume between containers.
+
+### Challenge
+By now, you should know enough to write your own `docker-compose.yml`.
+
+Your challenge now is to write your `docker-compose.yml`, which includes your Sinatra app and redis.
+Ensure that when you run `docker-compose up`, it will start your Sinatra app.
+Then verify that the pages it serves at http://localhost/ and http://localhost/redis-status are behaving as you expected.
+
+Tear down your whole setup with `docker-compose down`. Check the status of your containers and networks. What would you need to do to clean everything up?
+
+### What you have learned in this section
+Basic understang of `docker-compose`
+
+## The End
+This is it! You got all the basics to get you going in Docker.
+In your spare time, try to build images for your applications and boot them up with `docker-compose`
