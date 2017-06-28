@@ -60,7 +60,7 @@ Commonly used options for `docker run`
 
 Think Image vs Containers as Classes vs Instances!
 
-#### Mini Challenge
+### Mini Challenge
 Try to run two instances of NGINX: one on localhost:8000 and another on localhost:8001. Verify that they are two separate instances by serving different static pages.
 
 Once everything works (and verified), you can remove your nginx image with
@@ -69,7 +69,7 @@ Once everything works (and verified), you can remove your nginx image with
 docker rmi {image-name}
 ```
 
-#### What you have learned in this section
+### What you have learned in this section
 1. A bunch of image commands:
 ```
 docker pull {image-name}
@@ -158,13 +158,15 @@ Also, for inspiration, check the Dockerfiles used to create the official NGINX a
 By now, you should be abe to create your own Dockerfile!
 
 
-#### Build your image
+### 3. Build your image
 `docker build -t {username/image-name:version} .`
 
 The `.` (current location) implies that there is a `Dockerfile` in your current directory. Else you would have to provide another directory.
 `-t` allows you to tag your image
 
 While building your image, pay attention to the layers being created, as well as the time it takes. (This has to do with the Layered File System)
+
+### Challenges
 
 #### Mini Challenge 1
 Let's say we want to install the `whois` package into our image. How would you do it?
@@ -175,7 +177,7 @@ Also, pay attention to the build time.
 #### Mini Challenge 2 
 Run your brand new image as a container. Can you run `bash` within your container? Can you find out which process has PID 1?
 
-#### What you have learned in this section
+### What you have learned in this section
 1. Write your own Dockerfile, with various commands such as `FROM`, `RUN`, `WORKDIR`, `ADD`, `COPY`, `EXPOSE`, `ENTRYPOINT` and `CMD`.
 2. Build your own image with `docker build` and tag it with `-t`
 3. Layered File System (LFS)
