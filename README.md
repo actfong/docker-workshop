@@ -26,8 +26,8 @@ Commands to run
 ```
 docker pull nginx                 # to pull the nginx image from docker hub
 docker images                     # show the list of images available on your machine
-docker run -p 80:80 nginx:alpine  # run your nginx image, port forward 80 to 80. 
-# In my case, the image was tagged with alpine, your tag might be different. 
+docker run -p 80:80 nginx:latest  # run your nginx image, port forward 80 to 80. 
+# In my case, the image was tagged with latest, your tag might be different. 
 
 ```
 
@@ -53,8 +53,8 @@ vim 50x.html
 
 Run your docker again, but this time mount the files from your host's filesystem onto your container
 ```
-docker run -p 80:80 -v $(pwd):/usr/share/nginx/html nginx:alpine
-# run your nginx:alpine image, port forward 80 to 80
+docker run -p 80:80 -v $(pwd):/usr/share/nginx/html nginx:latest
+# run your nginx:latest image, port forward 80 to 80
 # $(pwd) prints the current working directory
 ```
 Now check the changes on http://localhost/ and http://localhost/50x.html
