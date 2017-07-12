@@ -217,7 +217,7 @@ docker network create {network-name}      # create your network
 
 Now run your container (`docker run`) containing the Sinatra app with the following option
 ```
---net={network-name}
+--net {network-name}
 ```
 
 You can now verify that your container is indeed connected to your network by:
@@ -253,9 +253,9 @@ redis.get "foo"        # should return bar
 
 If you can set and get values from your IRB console to redis, that means you have succesfully "networked" the two containers.
 
-Also take a look in 
+Also take a look in
 ```
-docker network {network-name} inspect
+docker network inspect {network-name}
 ```
 , where the attached containers are listed.
 
@@ -271,7 +271,7 @@ Task: Display the result from your `ping` onto the page as plain text.
 ```
 docker network create {network-name}
 docker network ls
-docker network inspect
+docker network inspect {network-name}
 docker network rm {network-name}
 ```
 
