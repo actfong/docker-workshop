@@ -26,30 +26,34 @@ At the end of the workshop, participants should feel confident about :
 For our Hello World exercise, we will run NGINX in a docker container.
 
 GOALS:
-- Verify that it's running (index.html and 50x.html get served)
-- Mount volume from your host machine, to serve your own index.html and 50x.html
+- Verify that our containers are running (hence *index.html* and *50x.html* get served)
+- Mount volume from your host machine, to serve your own *index.html* and *50x.html*
 
 Commands to run
 ```
-docker pull nginx                 # to pull the nginx image from docker hub
-docker images                     # show the list of images available on your machine
-docker run -p 80:80 nginx:latest  # run your nginx image, port forward 80 to 80. 
-# In my case, the image was tagged with latest, your tag might be different. 
-
+docker pull nginx:latest            # pull the nginx image (tagged with 'latest') from docker hub
+docker images                       # show the list of images available on your machine
+docker run -p 80:80 nginx:latest    # run the nginx image your just pulled, port forward 80 to 80. 
 ```
 
 Now check localost on your browser http://localhost/ and http://localhost/50x.html
 
 In case you are running `docker-machine`, get the ip with `docker-machine ip {machine-name}` (without the curly brackets).
 
+Then open another tab and try out some of the following commands:
 ```
-docker ps                           # (-a) check the running/exited containers
-docker stop {container_id}          # stop running container
-docker restart {container_id}       # restart running container
-docker exec -it {container_id} sh   # grab a shell
-docker rm {container_id}            # remove running container
+docker ps                                # (-a) check the running/exited containers
+docker stop {container_id}               # stop running container
+docker restart {container_id}            # restart running container
+docker exec -it {container_id} /bin/sh   # grab a shell to execute commands in a container
+docker rm {container_id}                 # remove running container
 ```
-Create your own index.html and 50x.html files
+
+Now that you have familiarized with some commands related to *containers*, we will proceed to serve our own static files with nginx.
+
+First, stop your running container, either by `ctrl+c` in the terminal running you nginx or execute `docker stop {container_id}` in another tab.
+
+Then create your own index.html and 50x.html files
 
 ```
 mkdir ~/somewhere/nginx_example
@@ -58,29 +62,58 @@ vim index.html
 vim 50x.html
 ```
 
-Run your docker again, but this time mount the files from your host's filesystem onto your container
+Run your docker again, but this time mount the files from your host's filesystem onto your container (`-v` option)
 ```
 docker run -p 80:80 -v $(pwd):/usr/share/nginx/html nginx:latest
-# run your nginx:latest image, port forward 80 to 80
+# run your nginx:latest image, port forward 80 on host to 80 in container
 # $(pwd) prints the current working directory
 ```
-Now check the changes on http://localhost/ and http://localhost/50x.html
+Now check the changes on http://localhost/ and http://localhost/50x.html (or replace localhost with docker-machine's ip)
 
-Commonly used options for `docker run`
+Commonly used options for **`docker run`**
 ```
 -p          # port forward from container to host
 -v          # mount volume from host onto container
---name      # option to assign a name, which would appear in `docker ps`
+--name      # option to assign a name, which would appear in `docker ps` instead of a randomly generated name
 --rm        # remove container on exit
 -it         # interactive mode and grab TTY. Useful for interactions, not useful for running web-apps or daemons
+-d          # daemon mode
 ```
 
-Think Image vs Containers as Classes vs Instances!
+So to wrap up, we have pulled the nginx *image* and based on that image, we ran a nginx *container*.
+
+The main takeaway is to think Image vs Containers as Classes vs Objects! (like OO-programming)
+
 
 ### Mini Challenge
-Try to run two instances of NGINX: one on localhost:8000 and another on localhost:8001. Verify that they are two separate instances by serving different static pages.
+Try to run two instances of NGINX: one on localhost:8001 and another on localhost:8002. This time, also make sure that they run in the backgroud (daemon).
 
-Once everything works (and verified), you can remove your nginx image with
+Verify that they are two separate instances by serving different static pages.
+
+<details>
+  <summary>Possible solution:</summary>
+  <p>
+```
+cd ~/somewhere
+mkdir nginx1 nginx2
+echo "Welcome to Nginx 1" > nginx1/index.html
+echo "Welcome to Nginx 2" > nginx2/index.html
+echo "50x on Nginx 1" > nginx1/50x.html
+echo "50x on Nginx 2" > nginx2/50x.html
+docker run -d  -v $(pwd)/nginx1:/usr/share/nginx/html -p 8001:80 nginx:latest
+docker run -d  -v $(pwd)/nginx2:/usr/share/nginx/html -p 8002:80 nginx:latest
+```
+</p></details>
+
+
+Once everything works (and verified), find the container-ids and subsequently stop and remove those containers
+```
+docker ps                            # get the container ids of your nginx containers
+docker stop {container-ids}          # stop your containers
+docker rm {container-ids}            # remove your containers
+```
+
+Then you can remove your nginx image with:
 
 ```
 docker rmi {image-name}
