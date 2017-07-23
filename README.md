@@ -93,6 +93,7 @@ Verify that they are two separate instances by serving different static pages.
 <details>
   <summary>Possible solution:</summary>
   <p>
+
 ```
 cd ~/somewhere
 mkdir nginx1 nginx2
@@ -103,6 +104,7 @@ echo "50x on Nginx 2" > nginx2/50x.html
 docker run -d  -v $(pwd)/nginx1:/usr/share/nginx/html -p 8001:80 nginx:latest
 docker run -d  -v $(pwd)/nginx2:/usr/share/nginx/html -p 8002:80 nginx:latest
 ```
+
 </p></details>
 
 
