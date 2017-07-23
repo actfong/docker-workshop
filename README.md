@@ -58,8 +58,8 @@ Then create your own index.html and 50x.html files
 ```
 mkdir ~/somewhere/nginx_example
 cd ~/somewhere/nginx_example
-vim index.html
-vim 50x.html
+echo "My own index page" > index.html
+echo "My own 50x page" > 50x.html
 ```
 
 Run your docker again, but this time mount the files from your host's filesystem onto your container (`-v` option)
@@ -106,16 +106,16 @@ docker run -d  -v $(pwd)/nginx2:/usr/share/nginx/html -p 8002:80 nginx:latest
 ```
 
 </p></details>
+<br/>
 
-
-Once everything works (and verified), find the container-ids and subsequently stop and remove those containers
+Once you have verified that both NGINX containers serve the correct static pages, find the container-ids and subsequently stop and remove those containers
 ```
 docker ps                            # get the container ids of your nginx containers
 docker stop {container-ids}          # stop your containers
 docker rm {container-ids}            # remove your containers
 ```
 
-Then you can remove your nginx image with:
+If you want, you can now remove your nginx image with:
 
 ```
 docker rmi {image-name}
@@ -133,6 +133,7 @@ docker rmi {image-name}
 ```
 docker run (with various options)
 docker ps
+docker stop
 docker rm
 ```
 
