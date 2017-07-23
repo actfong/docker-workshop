@@ -1,4 +1,6 @@
 # docker-workshop
+*Description*:
+
 docker workshop for beginners
 
 *GOAL*:
@@ -9,9 +11,14 @@ At the end of the workshop, participants should feel confident about :
 - allow containers to communicate with each other
 - write his/her own docker-compose
 
-Pre-requisite
-- Make sure you have docker installed on your machine. Whether you are using the old docker-machine or the new Docker for Mac.
-- register account with Docker Hub
+## Prerequisites
+1. Watch this video to get an idea of what containers are: 
+
+[![video](https://i.ytimg.com/an_webp/EnJ7qX9fkcU/mqdefault_6s.webp?du=3000&sqp=CMC60ssF&rs=AOn4CLBjboiiXjAlSP7pho-oyRHDzdeomQ)](https://www.youtube.com/watch?v=EnJ7qX9fkcU)
+
+2. Make sure you have docker installed on your machine. Whether you are using [docker-machine](https://docs.docker.com/machine/overview/) or something like [Docker for Mac](https://docs.docker.com/docker-for-mac/).
+
+3. Register account with Docker Hub
 
 - - - - 
 
