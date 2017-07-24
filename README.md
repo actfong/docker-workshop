@@ -14,7 +14,7 @@ At the end of the workshop, participants should feel confident about :
 ## Prerequisites
 1. Watch this video to get an idea of what containers are: 
 
-[![video](https://i.ytimg.com/an_webp/EnJ7qX9fkcU/mqdefault_6s.webp?du=3000&sqp=CMC60ssF&rs=AOn4CLBjboiiXjAlSP7pho-oyRHDzdeomQ)](https://www.youtube.com/watch?v=EnJ7qX9fkcU)
+[![Watch this video](https://i.ytimg.com/vi/EnJ7qX9fkcU/default.jpg)](https://www.youtube.com/watch?v=EnJ7qX9fkcU)
 
 2. Make sure you have docker installed on your machine. Whether you are using [docker-machine](https://docs.docker.com/machine/overview/) or something like [Docker for Mac](https://docs.docker.com/docker-for-mac/).
 
@@ -165,6 +165,9 @@ In this repo, create a `Dockerfile`. Pay attention to the capital `D`
 Be specific about the version of the image. When not specified, the `latest` tag will be used.
 Since we are building an image for our Ruby application, have a look at https://hub.docker.com/_/ruby/ 
 
+*Good to know: Pay attention to the various versions and their sizes under the **tags** tab. The ones end with **alpine** and **slim** are much smaller in size. I'd strongly advise you to look at their own Dockerfiles to figure out why that is the case.*
+
+
 `RUN` 
 
 `RUN` instructions are used to run commands against the images that we are building. Typically, one of the first things you would do is to perform a `apt-get` or `yum` update.
@@ -190,16 +193,16 @@ NOTE: If you want to keep it simple, stick to `CMD`
 
 Both can be used to set the default command (such as `npm run development`) and there are no hard rules regarding which one is best.
 
-Difference: the commands specifed in `ENTRYPOINT` will always be executed by `docker run` command, while the `CMD` commands can be overridden by passing arguments to the `docker run` command. 
-When both are specified, `CMD` will be used as arguments to `ENTRYPOINT`
 
-Example:
+When both are specified, `CMD` will be used as arguments to `ENTRYPOINT`. Example:
 ```
 ENTRYPOINT ["npm", "run"]
-CMD ["production"]
+CMD ["development"]
 ```
-In this case above, if you provide 'development' as argument to `docker run`, "production" will be overridden by "development". 
-However, whenever you run a container built with the ENTRYPOINT and CMD from above, the command `npm run` will always be run, regardless of arguments you provide.
+
+In the case above, if you run `docker run {image-name} production`, the argument that you passed in ("production") will override "development" as specified in CMD. 
+
+The main difference between them is that `ENTRYPOINT` will always be run unless `--entrypoint` option is provided to `docker run`. `CMD` on the other hand, can be overridden by providing arguments to the `docker run` command.
 
 If you don't use ENTRYPOINT:
 ```
