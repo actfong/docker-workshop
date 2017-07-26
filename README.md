@@ -228,16 +228,78 @@ The `.` (current location) implies that there is a `Dockerfile` in your current 
 
 While building your image, pay attention to the layers being created, as well as the time it takes. (This has to do with the Layered File System)
 
+<details>
+  <summary>Possible solution:</summary>
+  <p>
+
+```
+### Dockerfile
+
+# Specify base image
+FROM ruby:2.3.3-slim
+
+# update packages
+RUN apt-get update
+ENV APP_DIR /app
+RUN mkdir -p $APP_DIR
+WORKDIR $APP_DIR
+
+# Add Gemfile and Gemfile.lock
+ADD Gemfile* $APP_DIR/
+
+# Install dependencies for our Sinatra app
+RUN bundle install
+
+# Add rest of the code-base to the working directory
+ADD . $APP_DIR/
+
+# Expose the port where our Sinatra app is running
+EXPOSE 4567
+
+# start our server
+CMD ["ruby", "docker-newbies.rb", "-o", "0.0.0.0"]
+
+```
+
+  </p>
+</details>
+
 ### Challenges
 
 #### Mini Challenge 1
-Let's say we want to install the `whois` package into our image. How would you do it? (Tip: check previous `apt-get install`)
+Let's say we want to install the `whois` package into our image. How would you do it? Tip: check [Dockerfile Best practices](https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#run)
 
-Once you have figure it out, build your image again and see whether the layers (id's) are still the same as the last time.
+Once you have figured it out, build your image again and see whether the image-layers (id's) are still the same as the last time.
 Also, pay attention to the build time.
 
 #### Mini Challenge 2 
-Run your brand new image as a container. Can you run `bash` within your container? Can you find out which process has PID 1?
+Run your brand new image as a container. Can you use `bash` within the container you just spun up? Can you find out which process has PID 1?
+
+<details>
+  <summary>Possible solution:</summary>
+  <p>
+  
+```shell
+docker run --rm -p 4567:4567 --name {container-name} -d {image}
+docker exec -it {container-name} /bin/bash
+
+# Within the container
+$ ps aux
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         1  0.3  1.0  97172 22144 ?        Ssl  06:52   0:00 ruby docker-newbies.rb -o 0.0.0.0
+
+# Get out of the container with ctrl-d, then
+docker stop {container-name}
+# since we ran with the --rm option, the container will automatically be removed when stopped
+```
+
+PID 1 should be the same command as specified in your CMD or ENTRYPOINT (unless you override it with options during `docker run`). 
+
+This is the whole point of containerization: **Each container should have only one process. And when that process exits, the container will be stopped.**
+
+  </p>
+</details>
+
 
 ### What you have learned in this section
 1. Write your own Dockerfile, with various commands such as `FROM`, `RUN`, `WORKDIR`, `ADD`, `COPY`, `EXPOSE`, `ENTRYPOINT` and `CMD`.
