@@ -342,11 +342,22 @@ Can you run your container in such a way, that it is attached to your network (`
 Another important note, to allow connections from other containers in the same network, they also need some kind of a *hostname*. 
 When running containers in a network, the name that you provide with `--name` can be used as a hostname.
 
-#### Mini Challenge 2
-Please install the `redis` gem from https://github.com/redis/redis-rb by adding it to your Gemfile and run `bundle install`
-(TIP: There are various ways to do that!)
+<details>
+  <summary>Possible solution:</summary>
+  <p>
 
-When installing the redis gem, don't forget to re-build your image (`docker build`)
+```
+docker network create {network-name}
+docker pull redis:latest
+docker run -d --rm --net {network-name} --name {container-name-redis} redis:latest
+docker network inspect {network-name}
+```
+
+  </p>
+</details>
+
+#### Mini Challenge 2
+Please install the `redis` gem from https://github.com/redis/redis-rb by adding it to your Gemfile of the Sinatra application and run `bundle install` by rebuilding your image (`docker build`)
 
 Once you have installed the `redis` gem, can you use `irb` within your sinatra-app container to set and get values on the Redis container that you just created? 
 
@@ -367,12 +378,61 @@ docker network inspect {network-name}
 ```
 , where the attached containers are listed.
 
+<details>
+  <summary>Possible solution:</summary>
+  <p>
+
+```
+# In your Gemfile, add the following line
+gem 'redis', '~>3.2'
+
+# Build your image again, now tagged with a new version
+# When re-building your image, you will see that the step to run `bundle install` will take longer than the other steps, 
+# due to the Layered File System
+docker build -t {username/image-name:new-version} .
+
+# Run your application in background
+docker run -d --rm --name {container-name-sinatra} --net {network-name} -p 4567:4567 {image-name-with-new-version}
+
+# execute `irb` in the container you just spun up
+docker exec -it {container-name-sinatra} /usr/local/bin/irb
+
+# In your irb, require redis and perform the get/set commands as described above
+```
+
+  </p>
+</details>  
+
 #### Mini Challenge 3
 Redis clients (such as the installed `redis` gem) has a function called `ping`, when the connection can be established, it return `PONG`.
 
 Let's create a route in your sinatra-app called `/redis-status`. We will use this route to see whether your Redis instance is up.
 
 Task: Display the result from your `ping` onto the page as plain text.
+
+<details>
+  <summary>Possible solution:</summary>
+  <p>
+  
+```
+# In docker-newbies.rb, add the following lines
+require 'redis'
+get '/redis-status' do
+  redis = Redis.new(:host => #{name-redis-container}, :port => 6379)
+  redis.ping
+end
+
+# rebuild your image again, tagged with new version
+docker build -t {username/image-name:new-version} .
+
+# Run your application with the latest version
+docker run -d --rm --name {container-name-sinatra}  --net {network-name} -p 4567:4567 {image-name-with-new-version}
+
+# Now go to /redis-status of your Sinatra application
+```
+
+  </p>
+</details>
 
 ### What you have learned in this section
 1. A bunch of commands for docker networks
