@@ -351,6 +351,7 @@ docker network create {network-name}
 docker pull redis:latest
 docker run -d --rm --net {network-name} --name {container-name-redis} redis:latest
 docker network inspect {network-name}
+# Within the `Containers` section, you should see your redis container
 ```
 
   </p>
