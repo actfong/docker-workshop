@@ -461,34 +461,44 @@ GOALS:
 - Basic understanding of docker-compose
 - Being able to run multiple containers without running separate `docker run` commands
 
-By the time you have a platform containing multiple services (containers), it no longer makes sense to run `docker run` for each container. 
+By the time you have a platform containing multiple services (containers), it no longer makes sense to run `docker run` for each container. Imagine having to provide all these options with every `docker run` for all your containers!
+
 Instead, you can configure multiple containers in such a way, that you can run the whole stack using one command: `docker-compose up`
 
 ### docker-compose.yml
 A basic structure can be found here => https://docs.docker.com/compose/overview/
 
 `services` 
+
 It contains a list of containers that you want to run. The first level below `services` are names that you want to give to your containers. These names will also be used for lookup within your network
 
 `build` and `image`
-Indicates the location of your Dockerfile. 
+
+`build` indicates the location of your Dockerfile. 
 Only needed if you need docker-compose to build your image. 
 Otherwise, just spefified `image` with necessary tags is enough
 
 `ports` 
+
 Takes care of port forwarding
 
 `networks`
+
 They can appear at top-level and within your service.
 
 At top level, it allows you to create a network from scratch. 
 Once created, you can let your containers (services) attach to it by again defining `networks` under the name of your `service`, along with `ports`, `volumes` etc.
 
 `volumes`
-Actually... I don't know enough about this :)
 
-Within a `service`, it allows you to mount volumes from host into your image.
-A top level, AFAIK, you can share volume between containers.
+At top level, it allows you to define a persistent named-volume, which you can share volume between containers.
+For example, you might want to apply such named-volume to a database container.
+
+Within a `service`, it allows you to mount a path from host into your image. 
+
+`command`
+
+Whether `CMD` was defined or not in your Dockerfile, `command` will always take precedence.
 
 ### Challenge
 By now, you should know enough to write your own `docker-compose.yml`.
@@ -498,6 +508,44 @@ Ensure that when you run `docker-compose up`, it will start your Sinatra app.
 Then verify that the pages it serves at http://localhost/ and http://localhost/redis-status are behaving as you expected.
 
 Tear down your whole setup with `docker-compose down`. Check the status of your containers and networks. What would you need to do to clean everything up?
+
+<details>
+  <summary>Possible solution:</summary>
+  <p>
+  
+  
+```
+# docker-compose.yml
+version: '3'
+
+services:
+  sinatra:
+    build: .
+    ports:
+      - 4567:4567
+    command: ["ruby", "docker-newbies.rb", "-o", "0.0.0.0"]
+    networks:
+      - sinatra-net
+
+  redis:
+    image: redis:latest
+    networks:
+      - sinatra-net
+
+networks:
+  sinatra-net:
+  
+# Make sure that the name of your redis container is the same as 
+# what you used in `Redis.new(:host => #{name-redis-container}, :port => 6379)`
+
+# Then run
+docker-compose up (-d)            # to start the whole stack
+docker-compose ps                 # list running processes / containers
+docker-compose down
+```
+
+  </p>
+</details>
 
 ### What you have learned in this section
 Basic understang of `docker-compose`
