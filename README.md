@@ -94,7 +94,7 @@ Verify that they are two separate instances by serving different static pages.
   <summary>Possible solution:</summary>
   <p>
 
-```
+<pre>
 cd ~/somewhere
 mkdir nginx1 nginx2
 echo "Welcome to Nginx 1" > nginx1/index.html
@@ -103,7 +103,7 @@ echo "50x on Nginx 1" > nginx1/50x.html
 echo "50x on Nginx 2" > nginx2/50x.html
 docker run -d  -v $(pwd)/nginx1:/usr/share/nginx/html -p 8001:80 nginx:latest
 docker run -d  -v $(pwd)/nginx2:/usr/share/nginx/html -p 8002:80 nginx:latest
-```
+</pre>
 
 </p></details>
 <br/>
@@ -232,7 +232,7 @@ While building your image, pay attention to the layers being created, as well as
   <summary>Possible solution:</summary>
   <p>
 
-```
+<pre>
 ### Dockerfile
 
 # Specify base image
@@ -259,7 +259,7 @@ EXPOSE 4567
 # start our server
 CMD ["ruby", "docker-newbies.rb", "-o", "0.0.0.0"]
 
-```
+</pre>
 
   </p>
 </details>
@@ -279,7 +279,7 @@ Run your brand new image as a container. Can you use `bash` within the container
   <summary>Possible solution:</summary>
   <p>
   
-```shell
+<pre>
 docker run --rm -p 4567:4567 --name {container-name} -d {image}
 docker exec -it {container-name} /bin/bash
 
@@ -291,7 +291,7 @@ root         1  0.3  1.0  97172 22144 ?        Ssl  06:52   0:00 ruby docker-new
 # Get out of the container with ctrl-d, then
 docker stop {container-name}
 # since we ran with the --rm option, the container will automatically be removed when stopped
-```
+</pre>
 
 PID 1 should be the same command as specified in your CMD or ENTRYPOINT (unless you override it with options during `docker run`). 
 
@@ -346,13 +346,13 @@ When running containers in a network, the name that you provide with `--name` ca
   <summary>Possible solution:</summary>
   <p>
 
-```
+<pre>
 docker network create {network-name}
 docker pull redis:latest
 docker run -d --rm --net {network-name} --name {container-name-redis} redis:latest
 docker network inspect {network-name}
 # Within the `Containers` section, you should see your redis container
-```
+</pre>
 
   </p>
 </details>
@@ -383,7 +383,7 @@ docker network inspect {network-name}
   <summary>Possible solution:</summary>
   <p>
 
-```
+<pre>
 # In your Gemfile, add the following line
 gem 'redis', '~>3.2'
 
@@ -399,7 +399,7 @@ docker run -d --rm --name {container-name-sinatra} --net {network-name} -p 4567:
 docker exec -it {container-name-sinatra} /usr/local/bin/irb
 
 # In your irb, require redis and perform the get/set commands as described above
-```
+</pre>
 
   </p>
 </details>  
@@ -415,7 +415,7 @@ Task: Display the result from your `ping` onto the page as plain text.
   <summary>Possible solution:</summary>
   <p>
   
-```
+<pre>
 # In docker-newbies.rb, add the following lines
 require 'redis'
 get '/redis-status' do
@@ -430,7 +430,7 @@ docker build -t {username/image-name:new-version} .
 docker run -d --rm --name {container-name-sinatra}  --net {network-name} -p 4567:4567 {image-name-with-new-version}
 
 # Now go to /redis-status of your Sinatra application
-```
+</pre>
 
   </p>
 </details>
@@ -514,7 +514,7 @@ Tear down your whole setup with `docker-compose down`. Check the status of your 
   <p>
   
   
-```
+<pre>
 # docker-compose.yml
 version: '3'
 
@@ -542,7 +542,7 @@ networks:
 docker-compose up (-d)            # to start the whole stack
 docker-compose ps                 # list running processes / containers
 docker-compose down
-```
+</pre>
 
   </p>
 </details>
